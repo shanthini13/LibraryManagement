@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.equifax.library.dto.BookDTO;
-import com.equifax.library.model.Book;
 import com.equifax.library.service.BookService;
 import com.equifax.library.service.UserService;
 
