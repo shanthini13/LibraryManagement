@@ -57,4 +57,15 @@ public class BookServiceImpl implements BookService {
 			return "Success";		
 	}
 
+	@Override
+	public Book getBookId(int id) {
+		Book book=bookRepo.findById(id).orElse(null);
+		if(book!=null) {
+			return book;
+		}
+
+		return null;
+		
+	}
+
 }
