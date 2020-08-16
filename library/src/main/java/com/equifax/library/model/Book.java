@@ -11,24 +11,19 @@ public class Book {
 	@Id
 	@GeneratedValue
 	@Column(name="BOOK_ID")
-	private int bookId;
+	private Integer bookId;
 	@Column(name="BOOK_NAME")
 	private String bookName;
 	@Column(name="BOOK_STATUS")
 	private String bookStatus;
 	@Column(name="USER_ID")
-	private int userId;
+	private Integer userId;
 	
-	public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-	public int getBookId() {
+
+	public Integer getBookId() {
 		return bookId;
 	}
-	public void setBookId(int bookId) {
+	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
 	public String getBookName() {
@@ -43,6 +38,12 @@ public class Book {
 	public void setBookStatus(String bookStatus) {
 		this.bookStatus = bookStatus;
 	}
-	
+
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 	
 }

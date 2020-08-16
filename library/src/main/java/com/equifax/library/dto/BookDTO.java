@@ -1,14 +1,17 @@
 package com.equifax.library.dto;
 
 public class BookDTO {
-	private int bookId;
+
+	private Integer bookId;
 	private String bookName;
 	private String bookStatus;
-	private int userId;
-	public int getBookId() {
+	private Integer userId;
+	
+	
+	public Integer getBookId() {
 		return bookId;
 	}
-	public void setBookId(int bookId) {
+	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
 	public String getBookName() {
@@ -23,10 +26,11 @@ public class BookDTO {
 	public void setBookStatus(String bookStatus) {
 		this.bookStatus = bookStatus;
 	}
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+
 }

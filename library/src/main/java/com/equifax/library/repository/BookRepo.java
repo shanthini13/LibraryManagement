@@ -8,6 +8,10 @@ import com.equifax.library.model.Book;
 
 public interface BookRepo extends CrudRepository<Book, Integer> {
 
+
+
+
 	List<Book> findAllByBookName(String bookname);
+
 
 }

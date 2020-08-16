@@ -2,14 +2,14 @@ package com.equifax.library.dto;
 
 public class UserDTO {
 	
-	private int userId;
+	private Integer userId;
 	private String userName;
 	private String userRole;
 	
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 	public String getUserName() {

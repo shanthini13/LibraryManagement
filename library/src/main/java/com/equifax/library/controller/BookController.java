@@ -1,13 +1,20 @@
 package com.equifax.library.controller;
 
 import java.util.List;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.Optional;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +60,25 @@ public class BookController {
 			obj.put("Message", "EAuthentication FAILED : User does not have access to perform this operation");
 			return new ResponseEntity(obj, HttpStatus.OK);
 
+
+@GetMapping(value="/getAllBooks")
+public List <Book> getAllBooks(){
+	return bookService.getAllBooks();
+}
+
+@PutMapping(value="/updateBookStatus")
+public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@RequestHeader(name="bookId") Integer bookId) {
+	if(null != userId  && null != bookId) {
+	String bookStatus=bookService.updateBookStatus(bookId,userId);
+	return bookStatus;
+	}
+	else {
+		return "UserId and BookId cannot be null";
+	}
+}
+
+
+
 		}
 	}
 	
@@ -78,6 +104,7 @@ public class BookController {
 			return new ResponseEntity(obj, HttpStatus.OK);
 		}
 	}
+
 
 	@RequestMapping(value = "/deletebook/{bookid}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteBook(@PathVariable int bookid, @RequestHeader("Verifyuser") int Verifyuser) {

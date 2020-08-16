@@ -14,7 +14,7 @@ package com.equifax.library.model;
 		@Id
 		@GeneratedValue
 		@Column(name = "USER_ID")
-		private int userId;
+		private Integer userId;
 		
 		@Column(name = "USER_NAME")
 		private String userName;
@@ -22,10 +22,10 @@ package com.equifax.library.model;
 		@Column(name = "ROLE")
 		private String userRole;
 		
-		public int getUserId() {
+		public Integer getUserId() {
 			return userId;
 		}
-		public void setUserId(int userId) {
+		public void setUserId(Integer userId) {
 			this.userId = userId;
 		}
 		public String getUserName() {
