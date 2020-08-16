@@ -1,5 +1,8 @@
 package com.equifax.library.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.equifax.library.dto.BookDTO;
+import com.equifax.library.model.Book;
 import com.equifax.library.service.BookService;
 import com.equifax.library.service.UserService;
 
@@ -41,7 +44,7 @@ public class BookController {
 					return new ResponseEntity(obj, HttpStatus.OK);
 				}
 			} else
-				obj.put("status", "False");
+		    obj.put("status", "False");
 			obj.put("Message", validationStatus);
 			return new ResponseEntity(obj, HttpStatus.OK);
 
@@ -50,6 +53,29 @@ public class BookController {
 			obj.put("Message", "EAuthentication FAILED : User does not have access to perform this operation");
 			return new ResponseEntity(obj, HttpStatus.OK);
 
+		}
+	}
+	
+	@RequestMapping("/books/{bookname}")
+	public ResponseEntity<?> bookId(@PathVariable String bookname) {
+		JSONObject obj = new JSONObject();
+		try {
+		List<Book> book=bookService.getBookName(bookname);
+		if(book!=null) {
+			obj.put("status", "True");
+			obj.put("Message", book);
+			return new ResponseEntity(obj, HttpStatus.OK);
+		}else
+		{
+		obj.put("status", "False");
+		obj.put("Message", "Book with given BookName not found");
+		return new ResponseEntity(obj, HttpStatus.BAD_REQUEST);
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+			obj.put("status", "False");
+			obj.put("Message", "Exception Occured while fetching the book details");
+			return new ResponseEntity(obj, HttpStatus.OK);
 		}
 	}
 
