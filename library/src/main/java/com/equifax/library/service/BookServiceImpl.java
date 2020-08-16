@@ -1,5 +1,6 @@
 package com.equifax.library.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -58,10 +59,10 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Book getBookId(int id) {
-		Book book=bookRepo.findById(id).orElse(null);
-		if(book!=null) {
-			return book;
+	public List<Book> getBookName(String bookName) {
+		List<Book> bookList=bookRepo.findAllByBookName(bookName);
+		if(bookList.size()!=0) {
+			return bookList;
 		}
 
 		return null;

@@ -1,5 +1,6 @@
 package com.equifax.library.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.json.simple.JSONObject;
@@ -55,11 +56,11 @@ public class BookController {
 		}
 	}
 	
-	@RequestMapping("/books/{bookid}")
-	public ResponseEntity<?> bookId(@PathVariable int bookid) {
+	@RequestMapping("/books/{bookname}")
+	public ResponseEntity<?> bookId(@PathVariable String bookname) {
 		JSONObject obj = new JSONObject();
 		try {
-		Book book=bookService.getBookId(bookid);
+		List<Book> book=bookService.getBookName(bookname);
 		if(book!=null) {
 			obj.put("status", "True");
 			obj.put("Message", book);
@@ -67,7 +68,7 @@ public class BookController {
 		}else
 		{
 		obj.put("status", "False");
-		obj.put("Message", "Book with given ID not found");
+		obj.put("Message", "Book with given BookName not found");
 		return new ResponseEntity(obj, HttpStatus.BAD_REQUEST);
 		}
 		}catch (Exception e) {
