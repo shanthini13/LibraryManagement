@@ -19,6 +19,7 @@ public class Book {
 	@Column(name="USER_ID")
 	private Integer userId;
 	
+
 	public Integer getBookId() {
 		return bookId;
 	}
@@ -37,6 +38,7 @@ public class Book {
 	public void setBookStatus(String bookStatus) {
 		this.bookStatus = bookStatus;
 	}
+
 	public Integer getUserId() {
 		return userId;
 	}

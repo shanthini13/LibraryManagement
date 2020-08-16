@@ -1,6 +1,7 @@
 package com.equifax.library.dto;
 
 public class BookDTO {
+
 	private Integer bookId;
 	private String bookName;
 	private String bookStatus;
