@@ -3,7 +3,6 @@ package com.equifax.library.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.equifax.library.dto.UserDTO;
 import com.equifax.library.model.User;
 import com.equifax.library.repository.UserRepository;
@@ -46,6 +45,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setUserName(userDTO.getUserName());
 		user.setUserRole(userDTO.getUserRole());
+		user.setUserStatus(userDTO.getUserStatus());
 		return user;
 	}
 	
@@ -55,9 +55,26 @@ public class UserServiceImpl implements UserService {
 		}else if(StringUtils.isBlank(userDTO.getUserRole()))
 		{
 			return "User role cannot be empty";
+		}else if(StringUtils.isBlank(userDTO.getUserStatus()))
+		{
+			return "User Status cannot be empty";
 		}
 		else 
 			return "Success";		
+	}
+
+
+	@Override
+	public String updateUser(int userId, String userStatus) {
+		User user = userRepo.findById(userId).orElse(null);
+		if(user!=null) {
+			user.setUserStatus(userStatus);
+			userRepo.save(user);
+			return "User status updated Successfully";
+		}
+		return "No such user present";
+		
+
 	}
 	
 	
