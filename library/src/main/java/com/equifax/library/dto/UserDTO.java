@@ -5,7 +5,14 @@ public class UserDTO {
 	private Integer userId;
 	private String userName;
 	private String userRole;
+	private String userStatus;
 	
+	public String getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
 	public Integer getUserId() {
 		return userId;
 	}

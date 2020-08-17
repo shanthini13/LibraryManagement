@@ -4,6 +4,7 @@ package com.equifax.library.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,20 @@ public class UserController {
 		
 	}
 	
+	@PutMapping("/updateUser/{adminId}")
+	public String updateUser(@PathVariable int adminId,@RequestHeader("UserId") int userId,
+			@RequestHeader("UserStatus") String userStatus) {
+		if(userService.authenticateUser(adminId)) {
+			try {
+				String status=userService.updateUser(userId,userStatus);
+				return status;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return "Some exception occured while updating UserStatus";
+			}
+		}else 
+			return "User does not have privileges to update another user's status";	
+	}
 	
 }
 
