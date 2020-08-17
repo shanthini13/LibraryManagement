@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,6 +49,7 @@ public class BookServiceImplTest {
         book.setBookId(4);
         book.setBookName("abc");
         book.setBookStatus("sucess");
+        Mockito.when(bookRepository.findById(book.getBookId())).thenReturn(java.util.Optional.of(book));
         bookService.deleteBook(book.getBookId());
         verify(bookRepository,times(1)).deleteById(book.getBookId());
 

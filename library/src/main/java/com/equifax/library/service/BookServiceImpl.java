@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public String deleteBook(int id) {
 		Book book=bookRepo.findById(id).orElse(null);
-		if(book!=null) {
+		if(book!=null)  {
 			bookRepo.deleteById(id);
 			return "Successfully deleted book with id : "+id;
 		}
@@ -66,14 +66,9 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<Book> getBookName(String bookName) {
-		List<Book> bookList=bookRepo.findAllByBookName(bookName);
-		if(bookList.size()!=0) {
-			return bookList;
-		}
-
-		return null;
-		
+	public Optional<Book> getBookId(Integer bookId){
+		Optional<Book> book=bookRepo.findById(bookId);
+			return book;
 	}
 
 	public List <Book> getAllBooks(){
