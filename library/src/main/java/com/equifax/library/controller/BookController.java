@@ -1,6 +1,7 @@
 package com.equifax.library.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,12 +76,12 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 
 
 	
-	@RequestMapping("/books/{bookname}")
-	public ResponseEntity<?> bookId(@PathVariable String bookname) {
+	@RequestMapping("/books/{bookId}")
+	public ResponseEntity<?> bookId(@PathVariable Integer bookId) {
 		JSONObject obj = new JSONObject();
 		try {
-		List<Book> book=bookService.getBookName(bookname);
-		if(book!=null) {
+		Optional<Book> book=bookService.getBookId(bookId);
+		if(book.isPresent()) {
 			obj.put("status", "True");
 			obj.put("Message", book);
 			return new ResponseEntity<Object>(obj, HttpStatus.OK);
