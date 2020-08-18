@@ -90,6 +90,7 @@ public class BookServiceImplTest {
 	@Test
 	public void shouldUpdateBookStatus() {
 		Mockito.when(bookRepository.findById(4)).thenReturn(java.util.Optional.of(book1));
+		Mockito.when(bookRepository.save(book1)).thenReturn(book1);
 		Mockito.when(userRepo.findById(1)).thenReturn(java.util.Optional.of(user));
 		String result=bookService.updateBookStatus(4, 1);
 		assertEquals("Book status updated successfully",result);
