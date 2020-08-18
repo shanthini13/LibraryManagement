@@ -9,5 +9,6 @@ public interface UserService {
 	public String deleteUser(int userId);
 	public boolean authenticateUser(int userId);
 	public String validateUser(UserDTO userDTO);
+	public String updateUser(int userId, String userStatus);
 
 }

@@ -22,6 +22,10 @@ package com.equifax.library.model;
 		@Column(name = "ROLE")
 		private String userRole;
 		
+		@Column(name="USER_STATUS")
+		private String userStatus;
+		
+		
 		public Integer getUserId() {
 			return userId;
 		}
@@ -39,6 +43,12 @@ package com.equifax.library.model;
 		}
 		public void setUserRole(String userRole) {
 			this.userRole = userRole;
+		}
+		public String getUserStatus() {
+			return userStatus;
+		}
+		public void setUserStatus(String userStatus) {
+			this.userStatus = userStatus;
 		}
 		
 }

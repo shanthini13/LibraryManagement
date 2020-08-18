@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Optional;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,13 +23,14 @@ import com.equifax.library.dto.BookDTO;
 import com.equifax.library.model.Book;
 import com.equifax.library.service.BookService;
 import com.equifax.library.service.UserService;
-
+@SuppressWarnings("unchecked")
 @RestController
 public class BookController {
 	@Autowired
 	private BookService bookService;
 	@Autowired
 	private UserService userService;
+
 
 	@RequestMapping(value = "/addbook", method = RequestMethod.POST)
 	public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO, @RequestHeader("userid") int userid) {
@@ -42,66 +42,49 @@ public class BookController {
 					bookService.addBook(bookDTO);
 					obj.put("status", "True");
 					obj.put("Message", "Successfully added book to DB");
-					return new ResponseEntity(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.OK);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					obj.put("status", "False");
 					obj.put("Message", "Exception Occured while adding the book");
-					return new ResponseEntity(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.OK);
 				}
 			} else
 		    obj.put("status", "False");
 			obj.put("Message", validationStatus);
-			return new ResponseEntity(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.OK);
 
 		} else {
 			obj.put("status", "False");
 			obj.put("Message", "EAuthentication FAILED : User does not have access to perform this operation");
-			return new ResponseEntity(obj, HttpStatus.OK);
-
-
-@GetMapping(value="/getAllBooks")
-public List <Book> getAllBooks(){
-	return bookService.getAllBooks();
-}
-
-@PutMapping(value="/updateBookStatus")
-public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@RequestHeader(name="bookId") Integer bookId) {
-	if(null != userId  && null != bookId) {
-	String bookStatus=bookService.updateBookStatus(bookId,userId);
-	return bookStatus;
-	}
-	else {
-		return "UserId and BookId cannot be null";
-	}
-}
-
+			return new ResponseEntity<Object>(obj, HttpStatus.OK);
 
 
 		}
 	}
-	
-	@RequestMapping("/books/{bookname}")
-	public ResponseEntity<?> bookId(@PathVariable String bookname) {
+
+
+	@RequestMapping("/books/{bookId}")
+	public ResponseEntity<?> bookId(@PathVariable Integer bookId) {
 		JSONObject obj = new JSONObject();
 		try {
-		List<Book> book=bookService.getBookName(bookname);
-		if(book!=null) {
+		Optional<Book> book=bookService.getBookId(bookId);
+		if(book.isPresent()) {
 			obj.put("status", "True");
 			obj.put("Message", book);
-			return new ResponseEntity(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.OK);
 		}else
 		{
 		obj.put("status", "False");
 		obj.put("Message", "Book with given BookName not found");
-		return new ResponseEntity(obj, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 		}
 		}catch (Exception e) {
 			e.printStackTrace();
 			obj.put("status", "False");
 			obj.put("Message", "Exception Occured while fetching the book details");
-			return new ResponseEntity(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.OK);
 		}
 	}
 
@@ -113,16 +96,37 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 			try {
 				String message = bookService.deleteBook(bookid);
 				obj.put("Message", message);
-				return new ResponseEntity(obj, HttpStatus.OK);
+				return new ResponseEntity<Object>(obj, HttpStatus.OK);
 			} catch (Exception e) {
 				e.printStackTrace();
 				obj.put("status", "False");
 				obj.put("Message", "Some exception occured while deleting book from DB");
-				return new ResponseEntity(obj, HttpStatus.OK);
+				return new ResponseEntity<Object>(obj, HttpStatus.OK);
 			}
 		} else
 			obj.put("status", "False");
 		obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
-		return new ResponseEntity(obj, HttpStatus.OK);
+		return new ResponseEntity<Object>(obj, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value="/getAllBooks")
+	public ResponseEntity <List <Book>> getAllBooks(){
+		List <Book> AllBooks=bookService.getAllBooks();
+		return new ResponseEntity<>(AllBooks, HttpStatus.OK);
+	}
+	
+
+	@PutMapping(value="/updateBookStatus")
+	public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@RequestHeader(name="bookId") Integer bookId) {
+		if(null != userId  && null != bookId) {
+		String bookStatus=bookService.updateBookStatus(bookId,userId);
+		return bookStatus;
+		}
+		else {
+			return "UserId and BookId cannot be null";
+		}
+	}
+	
+	
 }

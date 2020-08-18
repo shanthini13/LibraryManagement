@@ -1,9 +1,7 @@
 package com.equifax.library.service;
 
 import java.util.List;
-
 import java.util.Optional;
-
 
 import javax.transaction.Transactional;
 
@@ -16,6 +14,8 @@ import com.equifax.library.model.Book;
 import com.equifax.library.model.User;
 import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
+
+
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -64,16 +64,11 @@ public class BookServiceImpl implements BookService {
 		else 
 			return "Success";		
 	}
-
+	
 	@Override
-	public List<Book> getBookName(String bookName) {
-		List<Book> bookList=bookRepo.findAllByBookName(bookName);
-		if(bookList.size()!=0) {
-			return bookList;
-		}
-
-		return null;
-		
+	public Optional<Book> getBookId(Integer bookId){
+		Optional<Book> book=bookRepo.findById(bookId);
+			return book;
 	}
 
 	public List <Book> getAllBooks(){

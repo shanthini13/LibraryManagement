@@ -55,10 +55,23 @@ public class UserServiceImpl implements UserService {
 		}else if(StringUtils.isBlank(userDTO.getUserRole()))
 		{
 			return "User role cannot be empty";
+		}else if(StringUtils.isBlank(userDTO.getUserStatus())) {
+			return "User status cannot be empty";
 		}
 		else 
 			return "Success";		
 	}
+	
+	@Override
+	public String updateUser(int userId, String userStatus) {
+		User user = userRepo.findById(userId).orElse(null);
+		if(user!=null) {
+			user.setUserStatus(userStatus);
+			userRepo.save(user);
+			return "User status updated Successfully";
+		}
+		return "No such user present";
+		}
 	
 	
 }
