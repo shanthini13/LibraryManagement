@@ -77,10 +77,10 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 
 	
 	@RequestMapping("/books/{bookId}")
-	public ResponseEntity<?> bookId(@PathVariable Integer bookId) {
+	public ResponseEntity<?> bookbyId(@PathVariable Integer bookId) {
 		JSONObject obj = new JSONObject();
 		try {
-		Optional<Book> book=bookService.getBookId(bookId);
+		Optional<Book> book=bookService.getBookbyId(bookId);
 		if(book.isPresent()) {
 			obj.put("status", "True");
 			obj.put("Message", book);

@@ -12,7 +12,7 @@ public String deleteBook(int id);
 public String validateBook(BookDTO bookDTO);
 public List<Book> getAllBooks();
 public String updateBookStatus(Integer bookId,Integer userId);
-public Optional<Book> getBookId(Integer bookId);
+public Optional<Book> getBookbyId(Integer bookId);
 
 
 }

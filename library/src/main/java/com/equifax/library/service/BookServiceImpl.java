@@ -66,7 +66,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Optional<Book> getBookId(Integer bookId){
+	public Optional<Book> getBookbyId(Integer bookId){
 		Optional<Book> book=bookRepo.findById(bookId);
 			return book;
 	}
@@ -77,7 +77,6 @@ public class BookServiceImpl implements BookService {
 	
 	public String updateBookStatus(Integer bookId,Integer userId)
 	{
-		System.err.println("Inside update book:: userId ::"+userId+" BookId::"+bookId);
 		User user=userRepo.findById(userId).orElse(null);
 		if(null != user) {
 			Book book=bookRepo.findById(bookId).orElse(null);		
