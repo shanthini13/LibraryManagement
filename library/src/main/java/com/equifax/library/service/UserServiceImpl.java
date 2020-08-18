@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setUserName(userDTO.getUserName());
 		user.setUserRole(userDTO.getUserRole());
+		user.setUserStatus(userDTO.getUserStatus());
 		return user;
 	}
 	

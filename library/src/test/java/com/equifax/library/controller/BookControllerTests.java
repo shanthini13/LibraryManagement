@@ -2,7 +2,6 @@ package com.equifax.library.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -73,6 +74,30 @@ public class BookControllerTests {
 			}
 	    }
 	   
-	
+	   @Test
+	   public void updateBookStatus() {
+		   
+		   String success = "Success";
+		   
+		   Mockito.when(
+	    		   bookService.updateBookStatus(Mockito.anyInt(),Mockito.anyInt())).thenReturn("Success");
+		   
+		   RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.put("/updateBookStatus").header("userId", 2).header("bookId", 5)
+					.accept(MediaType.APPLICATION_JSON);
+		   
+		   MvcResult result;
+			try {
+				result = mockMvc.perform(requestBuilder).andReturn();
+				MockHttpServletResponse response = result.getResponse();
+
+				System.err.println("Response::"+response.getContentAsString());
+				assertEquals(success,response.getContentAsString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
+	     }
 	 
 	   }
