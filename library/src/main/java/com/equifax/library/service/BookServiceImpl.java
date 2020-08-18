@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
 		}else if(StringUtils.isBlank(bookDTO.getBookStatus()))
 		{
 			return "Book status cannot be empty";
-		}else if(bookDTO.getBookStatus().equals("Claimed")&& bookDTO.getUserId()==0) {
+		}else if(bookDTO.getBookStatus().equals("Claimed")&& bookDTO.getUserId()==null) {
 			
 				return "UserID Cannot be null when book is claimed";
 		}

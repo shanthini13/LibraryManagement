@@ -11,17 +11,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.equifax.library.dto.UserDTO;
 import com.equifax.library.model.User;
+import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 
 
 @RunWith(SpringRunner.class)
 public class UserServiceImplTest {
 	
-	
+	@Mock
+	private BookRepo bookRepo;
 	
 	@Mock
 	private UserRepository userRepo;
@@ -61,6 +64,8 @@ public class UserServiceImplTest {
 		user.setUserStatus("Active");
 		
 		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(Optional.of(user));
+		
+		Mockito.when(bookRepo.updateUserStatusForBooks(Mockito.anyInt())).thenReturn(Mockito.anyInt());
 		
 		String status = userService.deleteUser(user.getUserId());
 		System.err.println("Deletion Status::"+status);
