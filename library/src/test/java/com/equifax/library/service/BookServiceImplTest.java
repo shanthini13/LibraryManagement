@@ -60,39 +60,61 @@ public class BookServiceImplTest {
 	@Test
 	public void shouldSaveBookSuccessfully() {
 		Mockito.when(bookRepository.save(any(Book.class))).thenReturn(book1);
-		Book book2 = bookService.addBook(book);
-		assertEquals(book2.getBookId(), 4);
+		try {
+			Book book2 = bookService.addBook(book);
+			assertEquals(book2.getBookId(), 4);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Test
 	public void shouldDeleteBookSuccessfully() {
 		Mockito.when(bookRepository.findById(book1.getBookId())).thenReturn(java.util.Optional.of(book1));
-		bookService.deleteBook(book1.getBookId());
-		verify(bookRepository, times(1)).deleteById(book1.getBookId());
-
+		try {
+			bookService.deleteBook(book1.getBookId());
+			verify(bookRepository, times(1)).deleteById(book1.getBookId());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	public void shouldGetBookbyId() {
 		Mockito.when(bookRepository.findById(book1.getBookId())).thenReturn(java.util.Optional.of(book1));
-		Optional<Book> book3 = bookService.getBookbyId(book1.getBookId());
-		Integer bookIdValue = book3.get().getBookId();
-		assertEquals(bookIdValue,book1.getBookId());
+		try {
+			Optional<Book> book3 = bookService.getBookbyId(book1.getBookId());
+			Integer bookIdValue = book3.get().getBookId();
+			assertEquals(bookIdValue,book1.getBookId());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Test
 	public void shouldReturnAllBooks() {
 		Mockito.when(bookRepository.findAll()).thenReturn(books);
-		List<Book> booklist = bookService.getAllBooks();
-		assertEquals(books,booklist);
+		try {
+			List<Book> booklist = bookService.getAllBooks();
+			assertEquals(books,booklist);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	@Test
 	public void shouldUpdateBookStatus() {
 		Mockito.when(bookRepository.findById(4)).thenReturn(java.util.Optional.of(book1));
 		Mockito.when(bookRepository.save(book1)).thenReturn(book1);
 		Mockito.when(userRepo.findById(1)).thenReturn(java.util.Optional.of(user));
-		String result=bookService.updateBookStatus(4, 1);
-		assertEquals("Book status updated successfully",result);
+		try {
+			String result=bookService.updateBookStatus(4, 1);
+			assertEquals("Book status updated successfully",result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

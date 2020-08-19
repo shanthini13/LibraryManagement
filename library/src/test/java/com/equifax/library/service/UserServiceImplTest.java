@@ -40,24 +40,32 @@ class UserServiceImplTest {
 	public void updateUser() {
 		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(user));
 		Mockito.when(userRepo.save(user)).thenReturn(user);
-		String result=userimpl.updateUser(4,"Active");
-		assertEquals("User status updated Successfully",result);
-	}
-	
+		try {
+			String result=userimpl.updateUser(4,"Active");
+			assertEquals("User status updated Successfully",result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}	
 	@Test 
-	public void addUsersuccessfully() {
-		
+	public void addUsersuccessfully() {		
 		Mockito.when(userRepo.save(any(User.class))).thenReturn(user);
-		String result =userimpl.addUser(userDTO);
-		assertEquals("User Added Successfully",result);
-	}
-	
+		try {
+			String result =userimpl.addUser(userDTO);
+			assertEquals("User Added Successfully",result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
 	@Test 
 	public void deleteUsersuccessfully() {
 		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(user));
-		userimpl.deleteUser(user.getUserId());
-		verify(userRepo, times(1)).delete(user);
-
-
+		try {
+			userimpl.deleteUser(user.getUserId());
+			verify(userRepo, times(1)).delete(user);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

@@ -37,23 +37,23 @@ public class BookController {
 					bookService.addBook(bookDTO);
 					obj.put("status", "True");
 					obj.put("Message", "Successfully added book to DB");
-					return new ResponseEntity<Object>(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.CREATED);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					obj.put("status", "False");
 					obj.put("Message", "Exception Occured while adding the book");
-					return new ResponseEntity<Object>(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 				}
 			} else
 		    obj.put("status", "False");
 			obj.put("Message", validationStatus);
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.PARTIAL_CONTENT);
 
 		} else {
 			obj.put("status", "False");
-			obj.put("Message", "EAuthentication FAILED : User does not have access to perform this operation");
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
+			return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 		}
 	}
 

@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +46,7 @@ public class BookControllerTest {
 	private BookService bookService;
 	@Mock
 	private UserService userService;
+	
 	private MockMvc mockMvc;
 
 	@BeforeEach
@@ -70,7 +73,7 @@ public class BookControllerTest {
 		try {
 			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
-			assertEquals(200, response.getStatus());
+			assertEquals(201, response.getStatus());
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,24 +82,54 @@ public class BookControllerTest {
 	
 	@Test
 	   public void getAllBooks() throws Exception {
-		   
-	       RequestBuilder requestBuilder = MockMvcRequestBuilders
+		   RequestBuilder requestBuilder = MockMvcRequestBuilders
 					.get("/getAllBooks")
 					.accept(MediaType.APPLICATION_JSON);
 			Mockito.when(bookService.getAllBooks()).thenReturn(allBooks);
-
-			try {
+			try {	
+//				mockMvc.perform(requestBuilder)
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$[0].bookName", is(book.getBookName())))
+//				.andExpect(jsonPath("$[1].bookName", is("Mybook")));
 				
 				MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 				MockHttpServletResponse response = result.getResponse();
-				//System.err.println(((MvcResult) response).getResponse().getContentAsString());
 				assertEquals(200, response.getStatus());
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 	    }
 	   
+//	
+//	 @Test
+//	   public void getAllBooks() throws Exception {
+//		   Book book = new Book(15,"Test book","availabile",2);
+//		   Book book1 = new Book(16,"Mybook","Unavailabile",2);
+//	       List<Book> allBooks = new ArrayList<Book>();
+//	       allBooks.add(book);
+//	       allBooks.add(book1);
+//	       RequestBuilder requestBuilder = MockMvcRequestBuilders
+//					.get("/getAllBooks")
+//					.accept(MediaType.APPLICATION_JSON);
+//					
+//	       Mockito.when(
+//	    		   bookService.getAllBooks()).thenReturn(allBooks);
+//
+//			try {
+//				//result = mockMvc.perform(requestBuilder).andReturn();
+//				
+//				
+//				mockMvc.perform(requestBuilder)
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$[0].bookName", is(book.getBookName())))
+//				.andExpect(jsonPath("$[1].bookName", is("Mybook")));
+//				
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//	    }
+//	
 	   @Test
 	   public void updateBookStatus() {
 		   
