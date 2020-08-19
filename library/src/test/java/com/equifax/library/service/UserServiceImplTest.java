@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.equifax.library.dto.UserDTO;
 import com.equifax.library.model.Book;
 import com.equifax.library.model.User;
+import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -27,6 +28,8 @@ class UserServiceImplTest {
 	
 	@Mock
 	private UserRepository userRepo;
+	@Mock
+	private BookRepo bookRepo;
 	
 	UserDTO userDTO;
 	User user;
@@ -60,6 +63,7 @@ class UserServiceImplTest {
 	@Test 
 	public void deleteUsersuccessfully() {
 		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(user));
+		Mockito.when(bookRepo.updateUserStatusForBooks(Mockito.anyInt())).thenReturn(Mockito.anyInt());
 		try {
 			userimpl.deleteUser(user.getUserId());
 			verify(userRepo, times(1)).delete(user);
