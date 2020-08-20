@@ -15,4 +15,6 @@ public interface BookRepo extends CrudRepository<Book, Integer> {
 	@Query("update Book b set b.userId = null where b.userId = :userId")
 	int updateUserStatusForBooks(@Param("userId") Integer userId);
 
+	Object findByBookName(String bookName);
+
 }

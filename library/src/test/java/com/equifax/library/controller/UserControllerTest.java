@@ -60,8 +60,6 @@ public class UserControllerTest {
 		try {
 			result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
-
-			System.err.println("Response User Add::"+response.getContentAsString());
 			assertEquals(sucess,response.getContentAsString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +85,6 @@ public class UserControllerTest {
 		try {
 			result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
-			System.err.println("Response User Delete::"+response.getContentAsString());
 			assertEquals(success,response.getContentAsString());
 		} catch (Exception e) {
 			e.printStackTrace();

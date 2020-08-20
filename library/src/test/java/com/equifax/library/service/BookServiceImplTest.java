@@ -43,13 +43,9 @@ public class BookServiceImplTest {
 	@BeforeEach
 	public void setup() {
 		book = new BookDTO(4,"Ann Frank","Available",1);
-		
 		book1 = new Book(4,"Ann Frank","Available",1);
-		Book book2=new Book(5,"Ann","Claimed",1);
 		books =new ArrayList<>();
 		books.add(book1);
-		books.add(book2);
-		
 		user= new User();
 		user.setUserId(1);
 		user.setUserName("Shanthini");
@@ -80,6 +76,16 @@ public class BookServiceImplTest {
 		}
 	}
 	
+//	@Test
+//	public void shouldDeleteBookSuccessfullyFail() {
+//		Book book3=null;
+//		Mockito.when(bookRepository.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(book3));
+//		System.err.println(book3.getBookName());
+//		bookService.deleteBook(book1.getBookId());
+//		verify(bookRepository, times(0)).deleteById(book1.getBookId());
+//		
+//	}
+	
 	@Test
 	public void shouldGetBookbyId() {
 		Mockito.when(bookRepository.findById(book1.getBookId())).thenReturn(java.util.Optional.of(book1));
@@ -109,6 +115,24 @@ public class BookServiceImplTest {
 		Mockito.when(bookRepository.findById(4)).thenReturn(java.util.Optional.of(book1));
 		Mockito.when(bookRepository.save(book1)).thenReturn(book1);
 		Mockito.when(userRepo.findById(1)).thenReturn(java.util.Optional.of(user));
+		try {
+			String result=bookService.updateBookStatus(4, 1);
+			assertEquals("Book status updated successfully",result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	public void shouldUpdateBookStatustoUnavailable() {
+		Book book = new Book();
+		book.setBookId(4);
+		book.setBookName("Dark");
+		book.setBookStatus("Available");
+		Mockito.when(userRepo.findById(1)).thenReturn(java.util.Optional.of(user));
+		Mockito.when(bookRepository.findById(4)).thenReturn(java.util.Optional.of(book));
+		Mockito.when(bookRepository.save(book)).thenReturn(book);
 		try {
 			String result=bookService.updateBookStatus(4, 1);
 			assertEquals("Book status updated successfully",result);

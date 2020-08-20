@@ -81,17 +81,45 @@ public class BookControllerTest {
 	}
 	
 	@Test
+	void AdduserAuthFail() throws Exception {
+
+		Mockito.when(userService.authenticateUser(Mockito.anyInt())).thenReturn(false);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addbook").header("userid", 1)
+				.accept(MediaType.APPLICATION_JSON).content(exampleCourseJson).contentType(MediaType.APPLICATION_JSON);
+		try {
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			MockHttpServletResponse response = result.getResponse();
+			assertEquals(401, response.getStatus());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	void AdduserValidationFail() throws Exception {
+		Mockito.when(userService.authenticateUser(Mockito.anyInt())).thenReturn(true);
+		Mockito.when(bookService.validateBook(Mockito.any(BookDTO.class))).thenReturn("Failed validation");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addbook").header("userid", 1)
+				.accept(MediaType.APPLICATION_JSON).content(exampleCourseJson).contentType(MediaType.APPLICATION_JSON);
+		try {
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			MockHttpServletResponse response = result.getResponse();
+			assertEquals(206, response.getStatus());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
 	   public void getAllBooks() throws Exception {
 		   RequestBuilder requestBuilder = MockMvcRequestBuilders
 					.get("/getAllBooks")
 					.accept(MediaType.APPLICATION_JSON);
 			Mockito.when(bookService.getAllBooks()).thenReturn(allBooks);
 			try {	
-//				mockMvc.perform(requestBuilder)
-//				.andExpect(status().isOk())
-//				.andExpect(jsonPath("$[0].bookName", is(book.getBookName())))
-//				.andExpect(jsonPath("$[1].bookName", is("Mybook")));
-				
+
 				MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 				MockHttpServletResponse response = result.getResponse();
 				assertEquals(200, response.getStatus());
@@ -99,37 +127,7 @@ public class BookControllerTest {
 				e.printStackTrace();
 			}
 	    }
-	   
-//	
-//	 @Test
-//	   public void getAllBooks() throws Exception {
-//		   Book book = new Book(15,"Test book","availabile",2);
-//		   Book book1 = new Book(16,"Mybook","Unavailabile",2);
-//	       List<Book> allBooks = new ArrayList<Book>();
-//	       allBooks.add(book);
-//	       allBooks.add(book1);
-//	       RequestBuilder requestBuilder = MockMvcRequestBuilders
-//					.get("/getAllBooks")
-//					.accept(MediaType.APPLICATION_JSON);
-//					
-//	       Mockito.when(
-//	    		   bookService.getAllBooks()).thenReturn(allBooks);
-//
-//			try {
-//				//result = mockMvc.perform(requestBuilder).andReturn();
-//				
-//				
-//				mockMvc.perform(requestBuilder)
-//				.andExpect(status().isOk())
-//				.andExpect(jsonPath("$[0].bookName", is(book.getBookName())))
-//				.andExpect(jsonPath("$[1].bookName", is("Mybook")));
-//				
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//	    }
-//	
+
 	   @Test
 	   public void updateBookStatus() {
 		   
@@ -143,7 +141,6 @@ public class BookControllerTest {
 			try {
 				result = mockMvc.perform(requestBuilder).andReturn();
 				MockHttpServletResponse response = result.getResponse();
-				System.err.println("Response::"+response.getContentAsString());
 				assertEquals(success,response.getContentAsString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -178,7 +175,6 @@ public class BookControllerTest {
 
 			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
-			System.err.println(response.getContentAsString());
 			assertEquals(200, response.getStatus());
 
 		} catch (Exception e) {

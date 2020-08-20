@@ -45,6 +45,15 @@ public class UserServiceImpl implements UserService {
 		}
     }
 	
+//	public boolean validateUserStatus(int userId) {
+//		User user=userRepo.findById(userId).orElse(null);
+//		if(null!=user && user.getUserStatus().equalsIgnoreCase("Active")) { 
+//			return true;
+//		}else {
+//			return false;
+//		}
+//    }
+	
 	private User createUserFromUserDTO(UserDTO userDTO) {
 		User user = new User();
 		user.setUserName(userDTO.getUserName());

@@ -92,13 +92,17 @@ public class BookServiceImpl implements BookService {
 	}
 
 	public String validateBook(BookDTO bookDTO) {
+		Book book = (Book) bookRepo.findByBookName(bookDTO.getBookName());
 		if (StringUtils.isBlank(bookDTO.getBookName())) {
 			return "Book name cannot be empty";
-		} else if (StringUtils.isBlank(bookDTO.getBookStatus())) {
+		}else if(book!=null) {
+			return "Book Already present in DB";
+		}
+		else if (StringUtils.isBlank(bookDTO.getBookStatus())) {
 			return "Book status cannot be empty";
 		} else if (bookDTO.getBookStatus().equals("Available")&& bookDTO.getUserId() != null) {
 			return "UserID Cannot be present when book is Available";
-		} else if (bookDTO.getBookStatus().equals("Claimed") && bookDTO.getUserId() == null) {
+		} else if (bookDTO.getBookStatus().equals("Unavaliable") && bookDTO.getUserId() == null) {
 
 			return "UserID Cannot be null when book is claimed";
 		} else

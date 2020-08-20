@@ -53,7 +53,7 @@ public class BookController {
 		} else {
 			obj.put("status", "False");
 			obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
-			return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(obj, HttpStatus.UNAUTHORIZED);
 		}
 	}
 
@@ -88,14 +88,14 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 		}else
 		{
 		obj.put("status", "False");
-		obj.put("Message", "Book with given BookName not found");
-		return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
+		obj.put("Message", "Book with given BookId not found");
+		return new ResponseEntity<Object>(obj, HttpStatus.NOT_FOUND);
 		}
 		}catch (Exception e) {
 			e.printStackTrace();
 			obj.put("status", "False");
 			obj.put("Message", "Exception Occured while fetching the book details");
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -112,11 +112,11 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 				e.printStackTrace();
 				obj.put("status", "False");
 				obj.put("Message", "Some exception occured while deleting book from DB");
-				return new ResponseEntity<Object>(obj, HttpStatus.OK);
+				return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 			}
 		} else
 			obj.put("status", "False");
 		obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
-		return new ResponseEntity<Object>(obj, HttpStatus.OK);
+		return new ResponseEntity<Object>(obj, HttpStatus.UNAUTHORIZED);
 	}
 }
