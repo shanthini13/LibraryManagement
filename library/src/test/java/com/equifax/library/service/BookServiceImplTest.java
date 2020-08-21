@@ -6,8 +6,6 @@ import com.equifax.library.model.User;
 import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 import com.equifax.library.service.BookServiceImpl;
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,9 +14,11 @@ import org.mockito.Mock;
 import static org.mockito.Matchers.any;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
@@ -28,6 +28,9 @@ public class BookServiceImplTest {
 
 	@Mock
 	private BookRepo bookRepository;
+	
+	@Mock
+	private BookDTO bookDTO;
 	
 	@Mock
 	private UserRepository userRepo;
@@ -56,13 +59,11 @@ public class BookServiceImplTest {
 		try {
 			Book book2 = bookService.addBook(book);
 			assertEquals(book2.getBookId(), 4);
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-
 
 	@Test
 	public void shouldDeleteBookSuccessfully() {
@@ -70,65 +71,29 @@ public class BookServiceImplTest {
 		try {
 			bookService.deleteBook(book1.getBookId());
 			verify(bookRepository, times(1)).deleteById(book1.getBookId());
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-    
-   
-	@Test
-	public void shouldGetBookbyId() {
-		
-	Book book = new Book(15,"Test book","Available",2);
-		
-		Mockito.when(bookRepository.findById(book.getBookId())).thenReturn(java.util.Optional.of(book));
-		try {
-			Optional<Book> book3 = bookService.getBookId(book.getBookId());
-			Integer bookIdValue = book3.get().getBookId();
-			assertEquals(bookIdValue,book.getBookId());
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-}
-
-
-
-
-	
-//	@Test
-//	public void shouldDeleteBookSuccessfullyFail() {
-//		Book book3=null;
-//		Mockito.when(bookRepository.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(book3));
-//		System.err.println(book3.getBookName());
-//		bookService.deleteBook(book1.getBookId());
-//		verify(bookRepository, times(0)).deleteById(book1.getBookId());
-//		
-//	}
 	
 	@Test
 	public void shouldGetBookbyId() {
-		Mockito.when(bookRepository.findById(book1.getBookId())).thenReturn(java.util.Optional.of(book1));
+		Mockito.when(bookRepository.findByBookId(book1.getBookId())).thenReturn(book1);
 		try {
-			Optional<Book> book3 = bookService.getBookbyId(book1.getBookId());
-			Integer bookIdValue = book3.get().getBookId();
+			BookDTO bookDTO = bookService.getBookbyId(book1.getBookId());
+			Integer bookIdValue = bookDTO.getBookId();
 			assertEquals(bookIdValue,book1.getBookId());
 		}catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 
 	@Test
 	public void shouldReturnAllBooks() {
 		Mockito.when(bookRepository.findAll()).thenReturn(books);
 		try {
-			List<Book> booklist = bookService.getAllBooks();
-			assertEquals(books,booklist);
+			ArrayList<BookDTO> booklist = bookService.getAllBooks();
+			assertEquals(books.get(0).getBookName(),booklist.get(0).getBookName());
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -165,5 +130,75 @@ public class BookServiceImplTest {
 		}
 		
 	}
-}
+	
+	@Test 
+	public void validateBookName() {
+		bookDTO =new BookDTO();
+		String success= "Book name cannot be empty";
+		try {
+			String result =bookService.validateBook(bookDTO);
+			assertEquals(success,result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	@Test 
+	public void validateBookStatus() {
+		bookDTO =new BookDTO();
+		bookDTO.setBookName("Book1");
+		String success= "Book status cannot be empty";
+		try {
+			String result =bookService.validateBook(bookDTO);
+			assertEquals(success,result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	
+	@Test 
+	public void validateuseridnull() {
+		bookDTO =new BookDTO();
+		bookDTO.setBookName("Book1");
+		bookDTO.setBookStatus("Available");
+		bookDTO.setUserId(1);
+		String success= "UserID Cannot be present when book is Available";
+		try {
+			String result =bookService.validateBook(bookDTO);
+			assertEquals(success,result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	
+	@Test 
+	public void validateuseridNotnull() {
+		bookDTO =new BookDTO();
+		bookDTO.setBookName("Book1");
+		bookDTO.setBookStatus("Unavaliable");
+		//bookDTO.setUserId(1);
+		String success= "UserID Cannot be null when book is claimed";
+		try {
+			String result =bookService.validateBook(bookDTO);
+			assertEquals(success,result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	
+	@Test 
+	public void validateExistingBook() {
+		String success= "Book Already present in DB";
+		bookDTO =new BookDTO();
+		bookDTO.setBookName("Ann Frank");
+		bookDTO.setBookStatus("Available");
+		Mockito.when(bookRepository.findByBookName(Mockito.anyString())).thenReturn(book1);
 
+		try {
+			String result =bookService.validateBook(bookDTO);
+			assertEquals(success,result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	
+}

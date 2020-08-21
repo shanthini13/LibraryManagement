@@ -1,14 +1,10 @@
 package com.equifax.library.service;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.equifax.library.dto.BookDTO;
 import com.equifax.library.model.Book;
 import com.equifax.library.model.User;
@@ -44,9 +40,10 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Optional<Book> getBookbyId(Integer bookId) {
-		Optional<Book> book = bookRepo.findById(bookId);
-		return book;
+	public BookDTO getBookbyId(Integer bookId) {
+		Book book = bookRepo.findByBookId(bookId);
+		BookDTO bookDTO =createBookDTOFromBook(book);
+		return bookDTO;
 	}
   
  
@@ -118,22 +115,26 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	public String validateBook(BookDTO bookDTO) {
-		Book book = (Book) bookRepo.findByBookName(bookDTO.getBookName());
+		
 		if (StringUtils.isBlank(bookDTO.getBookName())) {
 			return "Book name cannot be empty";
-		}else if(book!=null) {
-			return "Book Already present in DB";
-		}
-		else if (StringUtils.isBlank(bookDTO.getBookStatus())) {
+		}else if (StringUtils.isBlank(bookDTO.getBookStatus())) {
 			return "Book status cannot be empty";
 		} else if (bookDTO.getBookStatus().equals("Available")&& bookDTO.getUserId() != null) {
 			return "UserID Cannot be present when book is Available";
 		} else if (bookDTO.getBookStatus().equals("Unavaliable") && bookDTO.getUserId() == null) {
 
 			return "UserID Cannot be null when book is claimed";
-		} else
+		}else { 
+			Book book = (Book) bookRepo.findByBookName(bookDTO.getBookName());
+			if(book!=null) {
+			return "Book Already present in DB";
+		}
+	else
 			return "Success";
 
 	}
-
+	}
 }
+
+
