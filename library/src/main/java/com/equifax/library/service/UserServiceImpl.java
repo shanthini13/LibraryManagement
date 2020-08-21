@@ -18,10 +18,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private BookRepo bookRepo;
 	
-	@Autowired
-	private BookRepo bookRepo;
-	
-	
 	public String addUser(UserDTO userDTO) {
 		User user = createUserFromUserDTO(userDTO);
 		userRepo.save(user);
@@ -75,15 +71,6 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
     }
-	
-//	public boolean validateUserStatus(int userId) {
-//		User user=userRepo.findById(userId).orElse(null);
-//		if(null!=user && user.getUserStatus().equalsIgnoreCase("Active")) { 
-//			return true;
-//		}else {
-//			return false;
-//		}
-//    }
 	
 	private User createUserFromUserDTO(UserDTO userDTO) {
 		User user = new User();

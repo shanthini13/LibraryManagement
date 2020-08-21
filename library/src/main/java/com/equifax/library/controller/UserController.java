@@ -80,30 +80,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/getAllUsers")
-	public ArrayList <UserDTO> getAlUsers(){
+	public ArrayList <UserDTO> getAllUsers(){
 		return userService.getAlUsers();
 		
 	}
-	
-	
-	
-	
-	@PutMapping("/updateUser/{adminId}")
-	public String updateUser(@PathVariable int adminId,@RequestHeader("UserId") int userId,@RequestHeader("UserStatus") String userStatus) {
-		if(userService.authenticateUser(adminId)) {
-			try {
-				
-				String status=userService.updateUser(userId,userStatus);
-				return status;
-			}catch(Exception e) {
-				e.printStackTrace();
-				return "Some exception occured while updating UserStatus";
-			}
-		}else 
-			return "User does not have privileges to update another user's status";	
-	}
-	
-	
-	
+		
 }
 

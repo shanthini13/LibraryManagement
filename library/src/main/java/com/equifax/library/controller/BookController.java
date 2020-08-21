@@ -4,11 +4,9 @@ package com.equifax.library.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,17 +83,12 @@ public class BookController {
 		}
 	}
 
-		}
-	}
-
-
-	
 	@RequestMapping("/books/{bookId}")
 	public ResponseEntity<?> bookbyId(@PathVariable Integer bookId) {
 		JSONObject obj = new JSONObject();
 		try {
-		Optional<Book> book=bookService.getBookbyId(bookId);
-		if(book.isPresent()) {
+		BookDTO book=bookService.getBookbyId(bookId);
+		if(book!=null) {
 			obj.put("status", "True");
 			obj.put("Message", book);
 			return new ResponseEntity<Object>(obj, HttpStatus.OK);

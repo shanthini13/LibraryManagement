@@ -40,7 +40,7 @@ public class BookControllerTest {
 
 	BookDTO bookDTO;
 	Book book;
-	List<Book> allBooks;
+	ArrayList<BookDTO> allBooks;
 	Optional<Book> book3;
 	@Mock
 	private BookService bookService;
@@ -54,9 +54,9 @@ public class BookControllerTest {
 		bookDTO = new BookDTO(4,"Ann Frank","Available",1);
 		book = new Book(4,"Ann Frank","Available",1);
 		
-		allBooks = new ArrayList<Book>();
-		allBooks.add(book);
-		Book book1 = new Book(16,"Mybook","Unavailabile",2);
+		allBooks = new ArrayList<BookDTO>();
+		allBooks.add(bookDTO);
+		BookDTO book1 = new BookDTO(16,"Mybook","Unavailabile",2);
 		allBooks.add(book1);
 		JacksonTester.initFields(this, new ObjectMapper());
 		mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
@@ -81,7 +81,7 @@ public class BookControllerTest {
 	}
 	
 	@Test
-	void AdduserAuthFail() throws Exception {
+	void AddBookAuthFail() throws Exception {
 
 		Mockito.when(userService.authenticateUser(Mockito.anyInt())).thenReturn(false);
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addbook").header("userid", 1)
@@ -97,7 +97,7 @@ public class BookControllerTest {
 	}
 	
 	@Test
-	void AdduserValidationFail() throws Exception {
+	void AddBookValidationFail() throws Exception {
 		Mockito.when(userService.authenticateUser(Mockito.anyInt())).thenReturn(true);
 		Mockito.when(bookService.validateBook(Mockito.any(BookDTO.class))).thenReturn("Failed validation");
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addbook").header("userid", 1)
@@ -150,7 +150,7 @@ public class BookControllerTest {
 	   
 	@Test
 	public void getBookById() throws Exception {
-		Mockito.when(bookService.getBookbyId(Mockito.anyInt())).thenReturn(java.util.Optional.of(book));
+		Mockito.when(bookService.getBookbyId(Mockito.anyInt())).thenReturn(bookDTO);
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/books/1").accept(MediaType.APPLICATION_JSON);
 
 		try {
@@ -164,7 +164,7 @@ public class BookControllerTest {
 		}
 
 	}
-	   
+
 	@Test
 	public void deleteBook() throws Exception {
 		Mockito.when(userService.authenticateUser(Mockito.anyInt())).thenReturn(true);

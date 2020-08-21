@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import com.equifax.library.model.Book;
 
 
@@ -21,5 +18,7 @@ public interface BookRepo extends CrudRepository<Book, Integer> {
 	int updateUserStatusForBooks(@Param("userId") Integer userId);
   
 	Object findByBookName(String bookName);
+
+	Book findByBookId(Integer bookId);
 
 }
