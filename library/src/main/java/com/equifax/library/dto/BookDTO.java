@@ -7,6 +7,19 @@ public class BookDTO {
 	private String bookStatus;
 	private Integer userId;
 	
+	public BookDTO()
+	{
+		
+	}
+	
+	public BookDTO(Integer bookId, String bookName, String bookStatus, Integer userId) {
+		super();
+		this.bookId = bookId;
+		this.bookName = bookName;
+		this.bookStatus = bookStatus;
+		this.userId = userId;
+	}
+	
 	public Integer getBookId() {
 		return bookId;
 	}

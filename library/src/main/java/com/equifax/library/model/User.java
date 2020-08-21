@@ -25,7 +25,20 @@ package com.equifax.library.model;
 		@Column(name="USER_STATUS")
 		private String userStatus;
 		
+		@Column(name="MAIL_ID")
+		private String mailId;
 		
+		public User() {
+			
+		}
+		
+		public User(Integer userId, String userName, String userRole, String userStatus,String mailId) {
+			this.userId = userId;
+			this.userName = userName;
+			this.userRole = userRole;
+			this.userStatus = userStatus;
+			this.mailId=mailId;
+		}
 		public Integer getUserId() {
 			return userId;
 		}
@@ -49,6 +62,12 @@ package com.equifax.library.model;
 		}
 		public void setUserStatus(String userStatus) {
 			this.userStatus = userStatus;
+		}
+		public String getMailId() {
+			return mailId;
+		}
+		public void setMailId(String mailId) {
+			this.mailId = mailId;
 		}
 		
 }

@@ -1,6 +1,6 @@
 package com.equifax.library.controller;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,8 @@ import com.equifax.library.dto.BookDTO;
 import com.equifax.library.model.Book;
 import com.equifax.library.service.BookService;
 import com.equifax.library.service.UserService;
+
+
 @SuppressWarnings("unchecked")
 @RestController
 public class BookController {
@@ -30,7 +32,28 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private UserService userService;
+	
+	
 
+	@GetMapping(value="/getAllBooks")
+	public ArrayList <BookDTO> getAllBooks(){
+	return bookService.getAllBooks();
+		
+	}
+	
+
+	@PutMapping(value="/updateBookStatus")
+	public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@RequestHeader(name="bookId") Integer bookId) {
+		if(null != userId  && null != bookId) {
+		String bookStatus=bookService.updateBookStatus(bookId,userId);
+		return bookStatus;
+		}
+		else {
+			return "UserId and BookId cannot be null";
+		}
+	}
+	
+	
 
 	@RequestMapping(value = "/addbook", method = RequestMethod.POST)
 	public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO, @RequestHeader("userid") int userid) {
@@ -110,23 +133,6 @@ public class BookController {
 	}
 	
 	
-	@GetMapping(value="/getAllBooks")
-	public ResponseEntity <List <Book>> getAllBooks(){
-		List <Book> AllBooks=bookService.getAllBooks();
-		return new ResponseEntity<>(AllBooks, HttpStatus.OK);
-	}
-	
-
-	@PutMapping(value="/updateBookStatus")
-	public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@RequestHeader(name="bookId") Integer bookId) {
-		if(null != userId  && null != bookId) {
-		String bookStatus=bookService.updateBookStatus(bookId,userId);
-		return bookStatus;
-		}
-		else {
-			return "UserId and BookId cannot be null";
-		}
-	}
 	
 	
 }

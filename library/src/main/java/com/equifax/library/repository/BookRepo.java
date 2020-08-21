@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.equifax.library.model.Book;
 
+
 public interface BookRepo extends CrudRepository<Book, Integer> {
+
 
 	@Transactional
 	@Modifying
@@ -17,5 +19,7 @@ public interface BookRepo extends CrudRepository<Book, Integer> {
 	int updateUserStatusForBooks(@Param("userId") Integer userId);
 
 
+	
+	
 
 }

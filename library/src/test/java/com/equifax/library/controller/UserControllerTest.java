@@ -1,6 +1,12 @@
 package com.equifax.library.controller;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +77,7 @@ public class UserControllerTest {
 	public void deleteUser() {
 		String success="Rintu deleted";
 		
-		UserDTO mockUserDTO = new UserDTO(4,"Rintu","Admin","Active");
+		UserDTO mockUserDTO = new UserDTO(4,"Rintu","Admin","Active","Admin@gmail.com");
 		
 		Mockito.when(
 				userService.authenticateUser(Mockito.anyInt())).thenReturn(true);
@@ -94,6 +100,53 @@ public class UserControllerTest {
 			e.printStackTrace();
 		}
      }
+	
+	
+	@Test
+	public void updateUser() {
+		
+		String success = "User status updated Successfully";
+		Mockito.when(
+				userService.authenticateUser(Mockito.anyInt())).thenReturn(true);
+		Mockito.when(
+				userService.updateUser(Mockito.anyInt(),Mockito.anyString())).thenReturn("User status updated Successfully");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.put("/updateUser/4").header("UserId", 2)
+				.header("UserStatus", "Inactive")
+				.accept(MediaType.APPLICATION_JSON);
+		try {
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			MockHttpServletResponse response = result.getResponse();
+			assertEquals(success,response.getContentAsString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void getAllUsers() {
+			UserDTO userDTO =  new UserDTO(4,"Rintu","Admin","Active","Admin@gmail.com");
+			
+			ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
+			userList.add(userDTO);
+		
+		 RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.get("/getAllUsers")
+					.accept(MediaType.APPLICATION_JSON);
+					
+	       Mockito.when(
+	    		  userService.getAlUsers()).thenReturn(userList);
+	       
+	       try {
+				mockMvc.perform(requestBuilder)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].userName", is(userDTO.getUserName())));		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		  
+	}
 	
 }	
 	

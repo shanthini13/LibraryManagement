@@ -1,6 +1,6 @@
 package com.equifax.library.service;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -25,59 +25,24 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private UserRepository userRepo;
-
-	@Override
-	public Book addBook(BookDTO bookDTO) {
-		Book book=createBookFromBookDTO(bookDTO);
-		 return bookRepo.save(book);
-	}
-
-	@Override
-	public String deleteBook(int id) {
-		Book book=bookRepo.findById(id).orElse(null);
-		if(book!=null) {
-			bookRepo.deleteById(id);
-			return "Successfully deleted book with id : "+id;
-		}
-		else
-			return "Book not found";
-	}
 	
-	private Book createBookFromBookDTO(BookDTO bookDTO) {
-		Book book = new Book();
-		book.setBookName(bookDTO.getBookName());
-		book.setBookStatus(bookDTO.getBookStatus());
-		book.setUserId(bookDTO.getUserId());
-		return book;
-	}
-	
-	public String validateBook(BookDTO bookDTO) {
-		if(StringUtils.isBlank(bookDTO.getBookName())) {
-			return "Book name cannot be empty";
-		}else if(StringUtils.isBlank(bookDTO.getBookStatus()))
-		{
-			return "Book status cannot be empty";
-		}else if(bookDTO.getBookStatus().equals("Claimed")&& bookDTO.getUserId()==null) {
+
+	public ArrayList<BookDTO> getAllBooks(){
+		ArrayList<Book> booklist=new ArrayList<Book>();
+		ArrayList<BookDTO> bookDTOS=new ArrayList<BookDTO>();
+		
+		booklist=(ArrayList<Book>) bookRepo.findAll();
+		for(Book book:booklist) {
 			
-				return "UserID Cannot be null when book is claimed";
+			BookDTO bookDTO=createBookDTOFromBook(book);
+			bookDTOS.add(bookDTO);
 		}
-		else 
-			return "Success";		
-	}
-	
-	@Override
-	public Optional<Book> getBookId(Integer bookId){
-		Optional<Book> book=bookRepo.findById(bookId);
-			return book;
-	}
-
-	public List <Book> getAllBooks(){
-	return (List<Book>) bookRepo.findAll();
+		
+	return bookDTOS; 
 	}
 	
 	public String updateBookStatus(Integer bookId,Integer userId)
 	{
-		System.err.println("Inside update book:: userId ::"+userId+" BookId::"+bookId);
 		User user=userRepo.findById(userId).orElse(null);
 		if(null != user) {
 			Book book=bookRepo.findById(bookId).orElse(null);		
@@ -107,4 +72,61 @@ public class BookServiceImpl implements BookService {
 		}
 				
 	}
+	
+	
+	@Override
+	public Book addBook(BookDTO bookDTO) {
+		Book book=createBookFromBookDTO(bookDTO);
+		 return bookRepo.save(book);
+	}
+
+	@Override
+	public String deleteBook(int id) {
+		Book book=bookRepo.findById(id).orElse(null);
+		if(book!=null) {
+			bookRepo.deleteById(id);
+			return "Successfully deleted book with id : "+id;
+		}
+		else
+			return "Book not found";
+	}
+	
+	@Override
+	public Optional<Book> getBookId(Integer bookId){
+		Optional<Book> book=bookRepo.findById(bookId);
+			return book;
+	}
+	
+	
+	private Book createBookFromBookDTO(BookDTO bookDTO) {
+		Book book = new Book();
+		book.setBookName(bookDTO.getBookName());
+		book.setBookStatus(bookDTO.getBookStatus());
+		book.setUserId(bookDTO.getUserId());
+		return book;
+	}
+	
+	private BookDTO createBookDTOFromBook(Book book) {
+		BookDTO bookDTO=new BookDTO();
+		bookDTO.setBookId(book.getBookId());
+		bookDTO.setBookName(book.getBookName());
+		bookDTO.setBookStatus(book.getBookStatus());
+		bookDTO.setUserId(book.getUserId());
+		return bookDTO;
+	}
+	
+	public String validateBook(BookDTO bookDTO) {
+		if(StringUtils.isBlank(bookDTO.getBookName())) {
+			return "Book name cannot be empty";
+		}else if(StringUtils.isBlank(bookDTO.getBookStatus()))
+		{
+			return "Book status cannot be empty";
+		}else if(bookDTO.getBookStatus().equals("Claimed")&& bookDTO.getUserId()==null) {
+			
+				return "UserID Cannot be null when book is claimed";
+		}
+		else 
+			return "Success";		
+	}
+	
 }
