@@ -6,16 +6,20 @@ public class UserDTO {
 	private String userName;
 	private String userRole;
 	private String userStatus;
+	private String mailId;
+	
 	public UserDTO() {
 		
 	}
-	public UserDTO(Integer userId, String userName, String userRole, String userStatus) {
-		super();
+	
+	public UserDTO(Integer userId, String userName, String userRole, String userStatus,String mailId) {
 		this.userId = userId;
 		this.userName = userName;
 		this.userRole = userRole;
-		this.userStatus = userStatus;
+		this.userStatus = userStatus;	
+		this.mailId=mailId;
 	}
+	
 	public String getUserStatus() {
 		return userStatus;
 	}
@@ -39,6 +43,14 @@ public class UserDTO {
 	}
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
+	}
+
+	public String getMailId() {
+		return mailId;
+	}
+
+	public void setMailId(String mailId) {
+		this.mailId = mailId;
 	}
 	
 

@@ -7,10 +7,10 @@ public class BookDTO {
 	private String bookStatus;
 	private Integer userId;
 	
-	public BookDTO() {
+	public BookDTO()
+	{
 		
 	}
-	
 	public BookDTO(Integer bookId, String bookName, String bookStatus, Integer userId) {
 		super();
 		this.bookId = bookId;

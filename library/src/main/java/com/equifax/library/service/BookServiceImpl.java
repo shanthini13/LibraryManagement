@@ -1,7 +1,6 @@
 package com.equifax.library.service;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -16,6 +15,7 @@ import com.equifax.library.model.User;
 import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 
+
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -25,7 +25,8 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private UserRepository userRepo;
-
+	
+	
 	@Override
 	public Book addBook(BookDTO bookDTO) {
 		Book book = createBookFromBookDTO(bookDTO);
@@ -47,10 +48,22 @@ public class BookServiceImpl implements BookService {
 		Optional<Book> book = bookRepo.findById(bookId);
 		return book;
 	}
-
-	public List<Book> getAllBooks() {
-		return (List<Book>) bookRepo.findAll();
+  
+ 
+	public ArrayList<BookDTO> getAllBooks(){
+		ArrayList<Book> booklist=new ArrayList<Book>();
+		ArrayList<BookDTO> bookDTOS=new ArrayList<BookDTO>();
+		
+		booklist=(ArrayList<Book>) bookRepo.findAll();
+		for(Book book:booklist) {
+			
+			BookDTO bookDTO=createBookDTOFromBook(book);
+			bookDTOS.add(bookDTO);
+		}
+		
+	return bookDTOS; 
 	}
+
 
 	public String updateBookStatus(Integer bookId, Integer userId) {
 		User user = userRepo.findById(userId).orElse(null);
@@ -82,7 +95,10 @@ public class BookServiceImpl implements BookService {
 		}
 
 	}
-
+  
+  
+  
+  
 	private Book createBookFromBookDTO(BookDTO bookDTO) {
 		Book book = new Book();
 		book.setBookName(bookDTO.getBookName());
@@ -91,6 +107,16 @@ public class BookServiceImpl implements BookService {
 		return book;
 	}
 
+	
+	private BookDTO createBookDTOFromBook(Book book) {
+		BookDTO bookDTO=new BookDTO();
+		bookDTO.setBookId(book.getBookId());
+		bookDTO.setBookName(book.getBookName());
+		bookDTO.setBookStatus(book.getBookStatus());
+		bookDTO.setUserId(book.getUserId());
+		return bookDTO;
+	}
+	
 	public String validateBook(BookDTO bookDTO) {
 		Book book = (Book) bookRepo.findByBookName(bookDTO.getBookName());
 		if (StringUtils.isBlank(bookDTO.getBookName())) {

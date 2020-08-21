@@ -21,27 +21,26 @@ package com.equifax.library.model;
 		
 		@Column(name = "ROLE")
 		private String userRole;
-		
-		@Column(name = "USER_STATUS")
+
+		@Column(name="USER_STATUS")
 		private String userStatus;
 		
+		@Column(name="MAIL_ID")
+		private String mailId;
+		
+
 		public User() {
 			
 		}
 		
-		public User(Integer userId, String userName, String userRole, String userStatus) {
-			super();
+		public User(Integer userId, String userName, String userRole, String userStatus,String mailId) {
 			this.userId = userId;
 			this.userName = userName;
 			this.userRole = userRole;
 			this.userStatus = userStatus;
+			this.mailId=mailId;
 		}
-		public String getUserStatus() {
-			return userStatus;
-		}
-		public void setUserStatus(String userStatus) {
-			this.userStatus = userStatus;
-		}
+    
 		public Integer getUserId() {
 			return userId;
 		}
@@ -59,6 +58,18 @@ package com.equifax.library.model;
 		}
 		public void setUserRole(String userRole) {
 			this.userRole = userRole;
+		}
+		public String getUserStatus() {
+			return userStatus;
+		}
+		public void setUserStatus(String userStatus) {
+			this.userStatus = userStatus;
+		}
+		public String getMailId() {
+			return mailId;
+		}
+		public void setMailId(String mailId) {
+			this.mailId = mailId;
 		}
 		
 }

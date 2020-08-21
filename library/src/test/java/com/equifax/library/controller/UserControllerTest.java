@@ -1,5 +1,6 @@
 package com.equifax.library.controller;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,10 +12,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.equifax.library.dto.UserDTO;
 import com.equifax.library.model.User;
@@ -48,8 +52,6 @@ public class UserControllerTest {
 		
 		Mockito.when(
 				userService.validateUser(Mockito.any(UserDTO.class))).thenReturn("Success");
-		Mockito.when(
-				userService.addUser(Mockito.any(UserDTO.class))).thenReturn("User added successfully");
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/addUser").header("verifyUser", 2)
@@ -60,8 +62,10 @@ public class UserControllerTest {
 		try {
 			result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
+
 			assertEquals(sucess,response.getContentAsString());
 		} catch (Exception e) {
+
 			e.printStackTrace();
 		}
 		
@@ -70,26 +74,33 @@ public class UserControllerTest {
 	
 	@Test
 	public void deleteUser() {
+
 		String success="Ann Frank deleted";
+
 		
 		Mockito.when(
 				userService.authenticateUser(Mockito.anyInt())).thenReturn(true);
 		
 		Mockito.when(
+
 				userService.deleteUser(Mockito.anyInt())).thenReturn(userDTO.getUserName() + " deleted");
+
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.delete("/deleteUser/4").header("verifyUser", 2)
 				.accept(MediaType.APPLICATION_JSON);
+
 		MvcResult result;
 		try {
 			result = mockMvc.perform(requestBuilder).andReturn();
 			MockHttpServletResponse response = result.getResponse();
+
 			assertEquals(success,response.getContentAsString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
      }
+
 	@Test
 	public void updateUser() {
 		
@@ -110,4 +121,37 @@ public class UserControllerTest {
 			e.printStackTrace();
 		}
 	}
+
+	
+	@Test
+	public void getAllUsers() {
+			UserDTO userDTO =  new UserDTO(4,"Rintu","Admin","Active","Admin@gmail.com");
+			
+			ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
+			userList.add(userDTO);
+		
+		 RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.get("/getAllUsers")
+					.accept(MediaType.APPLICATION_JSON);
+					
+	       Mockito.when(
+	    		  userService.getAlUsers()).thenReturn(userList);
+	       
+	       try {
+				mockMvc.perform(requestBuilder)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].userName", is(userDTO.getUserName())));		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		  
+	}
+	
 }	
+	
+	
+	
+
+}	
+

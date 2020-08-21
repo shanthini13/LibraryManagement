@@ -30,6 +30,7 @@ public class Book {
 		this.bookStatus = bookStatus;
 		this.userId = userId;
 	}
+
 	public Integer getBookId() {
 		return bookId;
 	}

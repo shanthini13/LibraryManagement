@@ -1,6 +1,10 @@
 package com.equifax.library.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.equifax.library.dto.UserDTO;
+import com.equifax.library.model.User;
 
 public interface UserService {
 	
@@ -11,5 +15,6 @@ public interface UserService {
 //	public boolean validateUserStatus(int userId);
 	public String validateUser(UserDTO userDTO);
 	public String updateUser(int userId, String userStatus);
+  public ArrayList<UserDTO> getAlUsers();
 
 }

@@ -7,6 +7,7 @@ import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 import com.equifax.library.service.BookServiceImpl;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,11 +16,7 @@ import org.mockito.Mock;
 import static org.mockito.Matchers.any;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,11 +56,13 @@ public class BookServiceImplTest {
 		try {
 			Book book2 = bookService.addBook(book);
 			assertEquals(book2.getBookId(), 4);
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
+
 
 	@Test
 	public void shouldDeleteBookSuccessfully() {
@@ -71,10 +70,35 @@ public class BookServiceImplTest {
 		try {
 			bookService.deleteBook(book1.getBookId());
 			verify(bookRepository, times(1)).deleteById(book1.getBookId());
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+    
+   
+	@Test
+	public void shouldGetBookbyId() {
+		
+	Book book = new Book(15,"Test book","Available",2);
+		
+		Mockito.when(bookRepository.findById(book.getBookId())).thenReturn(java.util.Optional.of(book));
+		try {
+			Optional<Book> book3 = bookService.getBookId(book.getBookId());
+			Integer bookIdValue = book3.get().getBookId();
+			assertEquals(bookIdValue,book.getBookId());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+}
+
+
+
+
 	
 //	@Test
 //	public void shouldDeleteBookSuccessfullyFail() {
@@ -142,3 +166,4 @@ public class BookServiceImplTest {
 		
 	}
 }
+
