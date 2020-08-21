@@ -19,18 +19,18 @@ public class Book {
 	@Column(name="USER_ID")
 	private Integer userId;
 	
-	
 	public Book() {
 		
 	}
- 
+
 	public Book(Integer bookId, String bookName, String bookStatus, Integer userId) {
+		super();
 		this.bookId = bookId;
 		this.bookName = bookName;
 		this.bookStatus = bookStatus;
 		this.userId = userId;
 	}
-	
+
 	public Integer getBookId() {
 		return bookId;
 	}

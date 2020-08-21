@@ -1,97 +1,76 @@
 package com.equifax.library.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.equifax.library.dto.UserDTO;
+import com.equifax.library.model.Book;
 import com.equifax.library.model.User;
 import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
+@ExtendWith(MockitoExtension.class)
+class UserServiceImplTest {
 
-
-@RunWith(SpringRunner.class)
-public class UserServiceImplTest {
-	
-	@Mock
-	private BookRepo bookRepo;
+	@InjectMocks
+	UserServiceImpl userimpl;
 	
 	@Mock
 	private UserRepository userRepo;
+	@Mock
+	private BookRepo bookRepo;
 	
-	@InjectMocks
-    private UserServiceImpl userService;
+	UserDTO userDTO;
+	User user;
 	
-	@Test
-	public void shouldaddUserSuccessfully() {
-		String successString="User Added Successfully";
-		UserDTO userDTO = new UserDTO(15,"Test","User","Active","Admin@gmail.com");
-		User user=new User(15,"Test","User","Active","Admin@gmail.com");
-	
-		Mockito.when(userRepo.save(Mockito.any(User.class))).thenReturn(user);
-		
-		String status = userService.addUser(userDTO);
-		
-		assertThat(status).isEqualTo(successString);
+	@BeforeEach
+	public void setup() {
+		userDTO = new UserDTO(4,"Ann Frank","admin","Active");
+		user = new User(4,"Ann Frank","admin","Active");
 	}
-	
-	@Test
-	public void shouldDeleteUserSuccessFully() {
-		String successString="Test deleted";
-		User user=new User(15,"Test","User","Active","Admin@gmail.com");
-		
-		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(Optional.of(user));
-		
-		Mockito.when(bookRepo.updateUserStatusForBooks(Mockito.anyInt())).thenReturn(Mockito.anyInt());
-		
-		String status = userService.deleteUser(user.getUserId());
-		
-		assertThat(status).isEqualTo(successString);
-		verify(userRepo,times(1)).delete(user);
-		
-	}
-	
-	
 	@Test 
-	public void shouldUpdateUserSuccessfully() {
-		
-		String successString="User status updated Successfully";
-		User user=new User(15,"Test","User","Active","Admin@gmail.com");
-		
+	public void updateUser() {
 		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(user));
 		Mockito.when(userRepo.save(user)).thenReturn(user);
 		try {
-			String result=userService.updateUser(15, "Active");
-			assertEquals(successString,result);
+			String result=userimpl.updateUser(4,"Active");
+			assertEquals("User status updated Successfully",result);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}		
-	}
-	
-	@Test
-	public void shouldReturnAllUsers() {
+	}	
+	@Test 
+	public void addUsersuccessfully() {		
+		Mockito.when(userRepo.save(any(User.class))).thenReturn(user);
+		try {
+			String result =userimpl.addUser(userDTO);
+			assertEquals("User Added Successfully",result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}	
+	@Test 
+	public void deleteUsersuccessfully() {
+		Mockito.when(userRepo.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(user));
+		Mockito.when(bookRepo.updateUserStatusForBooks(Mockito.anyInt())).thenReturn(Mockito.anyInt());
+		try {
+			userimpl.deleteUser(user.getUserId());
+			verify(userRepo, times(1)).delete(user);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		User user=new User(15,"Test","User","Active","Admin@gmail.com");
-		List<User> list=new ArrayList<User>();
-	    list.add(user);	
-	    
-		ArrayList<UserDTO> newList = new ArrayList<UserDTO>();
-		Mockito.when(userRepo.findAll()).thenReturn((list));
-    
-	   	newList= userService.getAlUsers();
-   	 	assertThat(newList.get(0).getUserId()).isEqualTo(list.get(0).getUserId()); 
 	}
 
 }

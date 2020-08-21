@@ -11,7 +11,6 @@ public class BookDTO {
 	{
 		
 	}
-	
 	public BookDTO(Integer bookId, String bookName, String bookStatus, Integer userId) {
 		super();
 		this.bookId = bookId;
@@ -19,7 +18,6 @@ public class BookDTO {
 		this.bookStatus = bookStatus;
 		this.userId = userId;
 	}
-	
 	public Integer getBookId() {
 		return bookId;
 	}
