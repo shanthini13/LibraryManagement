@@ -37,23 +37,23 @@ public class BookController {
 					bookService.addBook(bookDTO);
 					obj.put("status", "True");
 					obj.put("Message", "Successfully added book to DB");
-					return new ResponseEntity<Object>(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.CREATED);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					obj.put("status", "False");
 					obj.put("Message", "Exception Occured while adding the book");
-					return new ResponseEntity<Object>(obj, HttpStatus.OK);
+					return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 				}
 			} else
 		    obj.put("status", "False");
 			obj.put("Message", validationStatus);
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.PARTIAL_CONTENT);
 
 		} else {
 			obj.put("status", "False");
-			obj.put("Message", "EAuthentication FAILED : User does not have access to perform this operation");
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
+			return new ResponseEntity<Object>(obj, HttpStatus.UNAUTHORIZED);
 		}
 	}
 
@@ -77,10 +77,10 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 
 	
 	@RequestMapping("/books/{bookId}")
-	public ResponseEntity<?> bookId(@PathVariable Integer bookId) {
+	public ResponseEntity<?> bookbyId(@PathVariable Integer bookId) {
 		JSONObject obj = new JSONObject();
 		try {
-		Optional<Book> book=bookService.getBookId(bookId);
+		Optional<Book> book=bookService.getBookbyId(bookId);
 		if(book.isPresent()) {
 			obj.put("status", "True");
 			obj.put("Message", book);
@@ -88,14 +88,14 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 		}else
 		{
 		obj.put("status", "False");
-		obj.put("Message", "Book with given BookName not found");
-		return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
+		obj.put("Message", "Book with given BookId not found");
+		return new ResponseEntity<Object>(obj, HttpStatus.NOT_FOUND);
 		}
 		}catch (Exception e) {
 			e.printStackTrace();
 			obj.put("status", "False");
 			obj.put("Message", "Exception Occured while fetching the book details");
-			return new ResponseEntity<Object>(obj, HttpStatus.OK);
+			return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -112,11 +112,11 @@ public String updateBookStatus(@RequestHeader(name="userId") Integer userId,@Req
 				e.printStackTrace();
 				obj.put("status", "False");
 				obj.put("Message", "Some exception occured while deleting book from DB");
-				return new ResponseEntity<Object>(obj, HttpStatus.OK);
+				return new ResponseEntity<Object>(obj, HttpStatus.BAD_REQUEST);
 			}
 		} else
 			obj.put("status", "False");
 		obj.put("Message", "Authentication FAILED : User does not have access to perform this operation");
-		return new ResponseEntity<Object>(obj, HttpStatus.OK);
+		return new ResponseEntity<Object>(obj, HttpStatus.UNAUTHORIZED);
 	}
 }

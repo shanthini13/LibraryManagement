@@ -6,7 +6,16 @@ public class UserDTO {
 	private String userName;
 	private String userRole;
 	private String userStatus;
-	
+	public UserDTO() {
+		
+	}
+	public UserDTO(Integer userId, String userName, String userRole, String userStatus) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userRole = userRole;
+		this.userStatus = userStatus;
+	}
 	public String getUserStatus() {
 		return userStatus;
 	}

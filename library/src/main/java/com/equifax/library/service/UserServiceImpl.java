@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.equifax.library.dto.UserDTO;
 import com.equifax.library.model.User;
+import com.equifax.library.repository.BookRepo;
 import com.equifax.library.repository.UserRepository;
 
 @Service
@@ -12,6 +13,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private BookRepo bookRepo;
 	
 	public String addUser(UserDTO userDTO) {
 		User user = createUserFromUserDTO(userDTO);
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
 		if(null!=user) {
 		String name=user.getUserName();
 		userRepo.delete(user);
+		bookRepo.updateUserStatusForBooks(userId);
 		return name +" deleted";
 		}else {
 			return "User not found";
@@ -40,6 +44,15 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
     }
+	
+//	public boolean validateUserStatus(int userId) {
+//		User user=userRepo.findById(userId).orElse(null);
+//		if(null!=user && user.getUserStatus().equalsIgnoreCase("Active")) { 
+//			return true;
+//		}else {
+//			return false;
+//		}
+//    }
 	
 	private User createUserFromUserDTO(UserDTO userDTO) {
 		User user = new User();
